@@ -4,6 +4,7 @@ final color NO_CLICK_FILL_COLOR = color(250, 100, 100);
 final color CLICK_FILL_COLOR = color(100, 100, 250);
 final color BACKGROUND_COLOR = color(250, 150, 150);
 final color STROKE_COLOR = color(250, 150, 150);
+final color HALF_COLOUR = color(100, 255, 50);
 //These all set different colors to each respective name
 final int CIRCLE_SIZE = 50;
 //This sets the circle size to the integer of 50
@@ -41,6 +42,13 @@ void draw() {
     //CHANGED, if the statement above is true it now also creates a larger circle where the mouse is at the time.
     
   }
+  
+  if (dist(mouseX, mouseY, circleX, circleY) < CIRCLE_SIZE/2 && (mouseX < 320)) {
+   fill(HALF_COLOUR); }
+  //CHANGED 2, if the players mouse is in the same spot as the circle and is on the left side of the screen, the circle is green, not red.
+     
+ 
+  
   else {
     fill(NO_CLICK_FILL_COLOR);
     //if the mouse is not the colour is red
