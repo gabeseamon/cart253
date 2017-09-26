@@ -7,6 +7,7 @@ final color STROKE_COLOR = color(250, 150, 150);
 //These all set different colors to each respective name
 final int CIRCLE_SIZE = 50;
 //This sets the circle size to the integer of 50
+
 int circleX;
 int circleY;
 int circleVX;
@@ -36,6 +37,9 @@ void draw() {
     if (dist(mouseX, mouseY, circleX, circleY) < CIRCLE_SIZE/2) {
     fill(CLICK_FILL_COLOR);
     //if the mouse is "touching"/in the same spot as the most recent circle its colour is blue.
+    ellipse(mouseX, mouseY, (CIRCLE_SIZE + 15), (CIRCLE_SIZE + 15));
+    //CHANGED, if the statement above is true it now also creates a larger circle where the mouse is at the time.
+    
   }
   else {
     fill(NO_CLICK_FILL_COLOR);
