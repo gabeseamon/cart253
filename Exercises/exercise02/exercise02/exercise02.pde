@@ -99,8 +99,11 @@ void drawBall() {
 void handleBallHitPaddle() {
   if (ballOverlapsPaddle()) {
     ballY = paddleY - paddleHeight/2 - ballSize/2;
-    ballVY = -ballVY;
+//CHANGED - every time the ball hits the paddle it's overall veliocity if halfed, untill the ball stands still.
+    ballVY = -ballVY / 2;
+    ballVX = -ballVX / 2;  
   }
+  
 }
 //This is the IF statement to tell if the ball is overlaping the paddle/
 boolean ballOverlapsPaddle() {
