@@ -25,17 +25,15 @@ color ballColor = color(255);
 // This creates the frames size, and refers to the setup fully coded below for the paddle and ball.
 void setup() {
   size(640, 480);
-  
+
   setupPaddle();
   setupBall();
- 
 }
 //This sets the paddle in the bottom middle of the frame
 void setupPaddle() {
   paddleX = width/2;
   paddleY = height - paddleHeight;
   paddleVX = 0;
-
 }
 //sets the starting point for the ball in the middle of the frame
 void setupBall() {
@@ -43,7 +41,6 @@ void setupBall() {
   ballY = height/2;
   ballVX = ballSpeed;
   ballVY = ballSpeed;
-  
 }
 //This draw funtion sets the backround color each frame, and runs all the respective code refered to below.
 void draw() {
@@ -60,26 +57,27 @@ void draw() {
 //This creates random squares each frame ranging from 1-3 pixels large.
 void drawStatic() {
   for (int i = 0; i < numStatic; i++) {
-   float x = random(0,width);
-   float y = random(0,height);
-   float staticSize = random(staticSizeMin,staticSizeMax);
-   fill(staticColor);
-   rect(x,y,staticSize,staticSize);
+    float x = random(0, width);
+    float y = random(0, height);
+    float staticSize = random(staticSizeMin, staticSizeMax);
+    fill(staticColor);
+    rect(x, y, staticSize, staticSize);
   }
 }
 //This updates the paddle loctation each frame, and constrains the paddle from leaving the the screen.
 void updatePaddle() {
   paddleX += paddleVX;  
-  paddleX = constrain(paddleX,0+paddleWidth/2,width-paddleWidth/2);
+  paddleX = constrain(paddleX, 0+paddleWidth/2, width-paddleWidth/2);
 }
 //This updates the ball location each frame, and also refers to the codes below that control what happens when the ball hits the edge of the frame or the paddle.
 void updateBall() {
   ballX += ballVX;
   ballY += ballVY;
-  
+
   handleBallHitPaddle();
   handleBallHitWall();
   handleBallOffBottom();
+
 }
 //This draws the paddle in the updated location
 void drawPaddle() {
@@ -99,11 +97,8 @@ void drawBall() {
 void handleBallHitPaddle() {
   if (ballOverlapsPaddle()) {
     ballY = paddleY - paddleHeight/2 - ballSize/2;
-//CHANGED - every time the ball hits the paddle it's overall veliocity if halfed, untill the ball stands still.
-    ballVY = -ballVY / 2;
-    ballVX = -ballVX / 2;  
+    ballVY = -ballVY;
   }
-  
 }
 //This is the IF statement to tell if the ball is overlaping the paddle/
 boolean ballOverlapsPaddle() {
@@ -134,25 +129,31 @@ void handleBallHitWall() {
     ballX = width - ballSize/2;
     ballVX = -ballVX;
   }
-  
+
   if (ballY - ballSize/2 < 0) {
     ballY = 0 + ballSize/2;
     ballVY = -ballVY;
   }
 }
-//Controls the movement of the paddle through the arrow keys/
+//Controls the movement of the paddle through the arrow keys
+//CHANGED - now when the keys are pressed they change either red or blue (depending on the direction)
 void keyPressed() {
   if (keyCode == LEFT) {
     paddleVX = -paddleSpeed;
+    ballColor = color(0,0,250);
   } else if (keyCode == RIGHT) {
     paddleVX = paddleSpeed;
+    ballColor = color (250,0,0);
   }
 }
 //Controls stopping the paddles movement when the key is released.
+//CHANGED - when you release the arrows keys now the ball turns black, which makes the ball invisible when the paddle is standing still.
 void keyReleased() {
   if (keyCode == LEFT && paddleVX < 0) {
     paddleVX = 0;
+    ballColor = color (0);
   } else if (keyCode == RIGHT && paddleVX > 0) {
     paddleVX = 0;
+    ballColor = color (0);
   }
 }
