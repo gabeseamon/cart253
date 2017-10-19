@@ -7,19 +7,21 @@ class Paddle {
 
   /////////////// Properties ///////////////
 
-  // Default values for speed and size
-  int SPEED = 5;
+  // Default values for speed, size and the player image
+  float SPEED = 4;
   int HEIGHT = 70;
   int WIDTH = 16;
-
-  // The position and velocity of the paddle (note that vx isn't really used right now)
-  int x;
-  int y;
-  int vx;
-  int vy;
+  PImage rightPlayer;
   
+  
+  // The position, velocity and acceleration of the paddle (note that vx isn't really used right now)
+  float x;
+  float y;
+  float vx;
+  float vy;
+  float ay;
   // The fill color of the paddle
-  color paddleColor = color(255);
+  
 
   // The characters used to make the paddle move up and down, defined in constructor
   char upKey;
@@ -31,13 +33,17 @@ class Paddle {
   // Paddle(int _x, int _y, char _upKey, char _downKey)
   //
   // Sets the position and controls based on arguments,
-  // starts the velocity at 0
+  // starts the velocity and acceleration at 0
 
-  Paddle(int _x, int _y, char _upKey, char _downKey) {
+  Paddle (int _x,int _y, char _upKey, char _downKey, PImage _rightPlayer) {
+    
+    rightPlayer = _rightPlayer;
     x = _x;
     y = _y;
+    
     vx = 0;
     vy = 0;
+    ay = 0;
 
     upKey = _upKey;
     downKey = _downKey;
@@ -51,9 +57,11 @@ class Paddle {
   // Updates position based on velocity and constraints the paddle to the window
 
   void update() {
-    // Update position with velocity (to move the paddle)
+    // Update position with velocity and acceleration (to move the paddle)
     x += vx;
     y += vy;
+    vy = vy + (ay * vy);
+    
 
     // Constrain the paddle's y position to be in the window
     y = constrain(y,0 + HEIGHT/2,height - HEIGHT/2);
@@ -65,12 +73,10 @@ class Paddle {
   
   void display() {
     // Set display properties
-    noStroke();
-    fill(paddleColor);
-    rectMode(CENTER);
+    imageMode(CENTER);
+    image (rightPlayer, x, y);
     
-    // Draw the paddle as a rectangle
-    rect(x, y, WIDTH, HEIGHT);
+    
   }
 
   // keyPressed()
@@ -80,12 +86,15 @@ class Paddle {
   void keyPressed() {
     // Check if the key is our up key
     if (key == upKey) {
-      // If so we want a negative y velocity
+      // If so we want a negative y velocity and an acceleration of 0.1
       vy = -SPEED;
+      ay = 0.1;
+      
     } // Otherwise check if the key is our down key 
     else if (key == downKey) {
-      // If so we want a positive y velocity
+      // If so we want a positive y velocity and an acceleration of 0.1
       vy = SPEED;
+      ay = 0.1;
     }
   }
 

@@ -9,10 +9,16 @@
 // Pretty ugly. (Now!)
 // Only two paddles. (So far!)
 
-// Global variables for the paddles and the ball
+// Global variables for the paddles, ball, ref and score
 Paddle leftPaddle;
 Paddle rightPaddle;
 Ball ball;
+Referee referee;
+Score score;
+// variables for the images
+PImage bg;
+PImage rightPlayer; 
+PImage ref;
 
 // The distance from the edge of the window a paddle should be
 int PADDLE_INSET = 8;
@@ -28,17 +34,23 @@ color backgroundColor = color(0);
 void setup() {
   // Set the size
   size(640, 480);
-
+  //loads the images for the backround, referee and paddle
+  bg = loadImage("backround.jpg");
+  rightPlayer = loadImage ("player1.jpg");
+  ref = loadImage ("referee2.png");
   // Create the paddles on either side of the screen. 
   // Use PADDLE_INSET to to position them on x, position them both at centre on y
   // Also pass through the two keys used to control 'up' and 'down' respectively
   // NOTE: On a mac you can run into trouble if you use keys that create that popup of
   // different accented characters in text editors (so avoid those if you're changing this)
-  leftPaddle = new Paddle(PADDLE_INSET, height/2, '1', 'q');
-  rightPaddle = new Paddle(width - PADDLE_INSET, height/2, '0', 'p');
-
+  leftPaddle = new Paddle(PADDLE_INSET, height/2, '1', 'q', rightPlayer);
+  rightPaddle = new Paddle(width - PADDLE_INSET, height/2, '0', 'p', rightPlayer);
+  //creates new ref
+  referee = new Referee(width/2, height/2, ref);
   // Create the ball at the centre of the screen
   ball = new Ball(width/2, height/2);
+  //creates the score bar
+  score = new Score(width/2, height -460);
 }
 
 // draw()
@@ -48,27 +60,34 @@ void setup() {
 
 void draw() {
   // Fill the background each frame so we have animation
-  background(backgroundColor);
-
-  // Update the paddles and ball by calling their update methods
+  background(bg);
+ 
+  
+  // Update the paddles, ball, ref and score by calling their update methods
   leftPaddle.update();
   rightPaddle.update();
   ball.update();
+  referee.update(ball);
+  score.update(ball);
 
   // Check if the ball has collided with either paddle
   ball.collide(leftPaddle);
   ball.collide(rightPaddle);
 
   // Check if the ball has gone off the screen
-  if (ball.isOffScreen()) {
+  if (ball.isOffScreen()){
+    //calls the score update
+    ball.updateScore();
     // If it has, reset the ball
+    
     ball.reset();
   }
 
-  // Display the paddles and the ball
+  // Display the paddles, ball and score
   leftPaddle.display();
   rightPaddle.display();
   ball.display();
+  score.display();
 }
 
 // keyPressed()
