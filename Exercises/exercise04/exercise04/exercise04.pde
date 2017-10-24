@@ -8,9 +8,10 @@
 
 // The size of a single grid element
 int gridSize = 20;
+int grideKillerSize = 20;
 // An array storing all the griddies
 Griddie[] griddies = new Griddie[100];
-
+Griddiekiller[] griddieKiller = new Griddiekiller[25];
 // setup()
 //
 // Set up the window and the griddies
@@ -21,10 +22,16 @@ void setup() {
   frameRate(10);
 
   // QUESTION: What does this for loop do?
+  // creates new griddies from each number in array
   for (int i = 0; i < griddies.length; i++) {
     int x = floor(random(0, width/gridSize));
     int y = floor(random(0, height/gridSize));
     griddies[i] = new Griddie(x * gridSize, y * gridSize, gridSize);
+  }
+  for (int i = 0; i < griddieKiller.length; i++) {
+    int x = floor(random(0, width/gridSize));
+    int y = floor(random(0, height/gridSize));
+    griddieKiller[i] = new Griddiekiller(x * gridSize, y * gridSize, gridSize);
   }
 }
 
@@ -44,13 +51,27 @@ void draw() {
     // Now go through all the griddies a second time...
     for (int j = 0; j < griddies.length; j++) {
       // QUESTION: What is this if-statement for?
+      //to check if there are two or more griddies in the same location
       if (j != i) {
         // QUESTION: What does this line check?
+        // checks if the griddies collide
         griddies[i].collide(griddies[j]);
       }
+      
     }
     
     // Display the griddies
     griddies[i].display();
   }
+  for (int i = 0; i < griddieKiller.length; i++) {
+    griddieKiller[i].update();
+    
+    for (int j = 0; j < griddieKiller.length; j++) {
+      if (j != i) {
+        griddieKiller[i].collide(griddies[j]);
+      }
+    }
+    griddieKiller[i].display();
+  }
+  
 }
