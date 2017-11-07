@@ -55,6 +55,20 @@ void draw() {
   for (int i = 0; i < bouncers.length; i++) {
    bouncers[i].update();
    bouncers[i].display();
+     //if the brightest pixel is in the top half of the screen, the bouncers velocity slows
+     if (brightestPixel.y > height/2) {
+     bouncers[i].vy = bouncers[i].vy * 0.2;  
+     
+  }
+  //if the brightest pixel is on the bottom half of screen, the velocity changes back to normal
+  if (brightestPixel.y < height/2) {
+    bouncers[i].vy = bouncers[i].vy * 1.2;
+    
+  }
+     
+       
+     
+
   }
   
   // For now we just draw a crappy ellipse at the brightest pixel
@@ -62,6 +76,7 @@ void draw() {
   stroke(#ffff00);
   strokeWeight(10);
   ellipse(brightestPixel.x,brightestPixel.y,20,20);
+  
 }
 
 // handleVideoInput
